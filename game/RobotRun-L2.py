@@ -91,257 +91,33 @@ class CharacterController(ShowBase):
 
     def buildLevel(self):
 
-        size = Vec3(3, 3, 1)
+        size = Vec3(16, 16, 1)
         position = Vec3(200, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1')
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(180, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.1', (30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(160, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.2', (-30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(140, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.3', (30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(120, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.4', (-30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(100, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.5', (30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(80, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.6', (-30, 0, 0))
-
-        size = Vec3(6, .5, 1)
-        position = Vec3(60, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.7', (30, 0, 0))
+        p0 = self.createFloatingRectangle(size, position, 'P1')
 
         size = Vec3(6, .5, 1)
         position = Vec3(40, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.8', (-30, 0, 0))
+        p1 =self.createFloatingRectangle(size, position, 'P1.1', (-30, 0, 0))
 
         size = Vec3(6, .5, 1)
         position = Vec3(20, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.9', (30, 0, 0))
+        p2 = self.createFloatingRectangle(size, position, 'P1.2', (30, 0, 0))
 
         size = Vec3(6, .5, 1)
         position = Vec3(0, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.10', (-30, 0, 0))
+        p3 =self.createFloatingRectangle(size, position, 'P1.3', (-30, 0, 0))
 
         size = Vec3(6, .5, 1)
         position = Vec3(-20, 0, 0)
-        self.createFloatingRectangle(size, position, 'P1.10', (30, 0, 0))
+        p4 = self.createFloatingRectangle(size, position, 'P1.4', (30, 0, 0))
 
-        size = Vec3(100, 100, 1)
-        position = Vec3(-132, 0, 0)
-        self.createFloatingRectangle(size, position, 'P2')
-
-        size = Vec3(50, 50, 30)
-        position = Vec3(-132, 0, 31)
-        self.createFloatingRectangle(size, position, 'P2.1')
-
-        size = Vec3(35, 35, 15)
-        position = Vec3(-132, 0, 76)
-        self.createFloatingRectangle(size, position, 'P2.2')
-
-        size = Vec3(20, 20, 8)
-        position = Vec3(-132, 0, 99)
-        self.createFloatingRectangle(size, position, 'P2.3')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-119, 60, 66)
-        self.createFloatingRectangle(size, position, 'P2.4')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-135, 60, 72)
-        self.createFloatingRectangle(size, position, 'P2.5')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-119, 60, 78)
-        self.createFloatingRectangle(size, position, 'P2.6')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-135, 60, 84)
-        self.createFloatingRectangle(size, position, 'P2.7')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-119, 60, 90)
-        self.createFloatingRectangle(size, position, 'P2.8')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-90, -8, 95)
-        self.createFloatingRectangle(size, position, 'P2.9')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-70, -8, 101)
-        self.createFloatingRectangle(size, position, 'P2.10')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-85, 10, 106)
-        self.createFloatingRectangle(size, position, 'P2.11')
-
-        size = Vec3(49, 3, 1)
-        position = Vec3(-135, -53, 12.8)
-        self.createFloatingRectangle(size, position, 'P2.12', (0,0,15))
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-185, -53, 25.45)
-        self.createFloatingRectangle(size, position, 'P2.13')
-
-        size = Vec3(3, 49, 1)
-        position = Vec3(-185, -3, 38.1)
-        self.createFloatingRectangle(size, position, 'P2.14', (0,15,0))
-
-        size = Vec3(3, 6, 1)
-        position = Vec3(-185, 50, 50.8)
-        self.createFloatingRectangle(size, position, 'P2.15')
-
-        size = Vec3(18, 3, 1)
-        position = Vec3(-164.5, 53, 55.4)
-        self.createFloatingRectangle(size, position, 'P2.16', (0,0,-15))
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-144.5, 53, 60)
-        self.createFloatingRectangle(size, position, 'P2.17')
-
-        size = Vec3(12, 12, 1)
-        position = Vec3(-250, 3, 20)
-
-        self.createFloatingRectangle(size, position, 'P2.18')
-
-        size = Vec3(9, 3, 1)
-        position = Vec3(-91, -53, 20)
-
-        self.createFloatingRectangle(size, position, 'P2.19')
-
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-400, -6, 123)
-
-        self.createFloatingRectangle(size, position, 'P3')
-
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-180, -6, 105)
-
-        p1 = self.createFloatingRectangle(size, position, 'P3.1')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-209, -6, 105)
-
-        p2 = self.createFloatingRectangle(size, position, 'P3.2')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-238, 6, 105)
-
-        p3 = self.createFloatingRectangle(size, position, 'P3.3')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-238, -18, 105)
-
-        p4 = self.createFloatingRectangle(size, position, 'P3.4')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-267, -30, 105)
-
-        p5 = self.createFloatingRectangle(size, position, 'P3.5')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-267, 18, 105)
-
-        p6 = self.createFloatingRectangle(size, position, 'P3.6')
-
-
-        # button variables
-        position = Vec3(-130, -14, 107)
-        platforms =[p1, p2, p3, p4, p5, p6]
-        time = 30
-        name = 'Button1'
-        buttonType = 0
+        platforms = [p1,p2,p3,p4]
+        time = 10
+        position = Vec3(200, 0, 1)
+        name = 'SW1'
+        buttonType = 3
 
         self.createButtonWithPlatformAction(position, platforms, time, name, buttonType)
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-296, 30, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.7')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-296, -42, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.8')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-325, -54, 100)
-
-        self.createFloatingRectangle(size, position, 'P3.9')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-325, 42, 100)
-
-        self.createFloatingRectangle(size, position, 'P3.10')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-325, 18, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.11')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-325, -30, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.12')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-354, -18, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.13')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-354, 6, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.14')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-383, -6, 105)
-
-        self.createFloatingRectangle(size, position, 'P3.15')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-315, -9, 80)
-
-        self.createFloatingRectangle(size, position, 'P3.16')
-
-        size = Vec3(9, 9, 1)
-        position = Vec3(-325, -90, 100)
-
-        self.createFloatingRectangle(size, position, 'P3.17')
-
-        size = Vec3(9, 9, 1)
-        position = Vec3(-325, 78, 100)
-
-        self.createFloatingRectangle(size, position, 'P3.18')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-400, -6, 111)
-
-        self.createFloatingRectangle(size, position, 'P3.19')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-383, -6, 117)
-
-        self.createFloatingRectangle(size, position, 'P3.20')
-
-        size = Vec3(3, 3, 1)
-        position = Vec3(-400, -6, 123)
-
-        self.createFloatingRectangle(size, position, 'P3')
 
     def addItems(self):
 
@@ -363,86 +139,7 @@ class CharacterController(ShowBase):
         position = Vec3(184.5, 3, 3)
         self.createConsumables(position, 2, 1)
 
-        position = Vec3(175.4, -2.7, 3)
-        self.createConsumables(position, 4, 1)
-
-        position = Vec3(164.8, -2.5, 3)
-        self.createConsumables(position, 2, 2)
-
-        position = Vec3(155.5, 2.54, 3)
-        self.createConsumables(position, 4, 2)
-
-        position = Vec3(144.7, 2.9, 3)
-        self.createConsumables(position, 2, 3)
-
-        position = Vec3(135.7, -2.7, 3)
-        self.createConsumables(position, 4, 3)
-
-        position = Vec3(124.7, -2.7, 3)
-        self.createConsumables(position, 2, 4)
-
-        position = Vec3(104.8, 2.7, 3)
-        self.createConsumables(position, 4, 4)
-
-        position = Vec3(115.5, 2.5, 3)
-        self.createConsumables(position, 2, 5)
-
-        position = Vec3(95.5, -2.5, 3)
-        self.createConsumables(position, 4, 5)
-
-        position = Vec3(84.9, -3.0, 3)
-        self.createConsumables(position, 2, 6)
-
-        position = Vec3(75.7, 2.6, 3)
-        self.createConsumables(position, 4, 6)
-
-        position = Vec3(65.0, 2.5, 3)
-        self.createConsumables(position, 2, 7)
-
-        position = Vec3(55.1, -2.6, 3)
-        self.createConsumables(position, 4, 7)
-
-        position = Vec3(45.7, -2.9, 3)
-        self.createConsumables(position, 4, 8)
-
-        position = Vec3(33.3, 2.6, 3)
-        self.createConsumables(position, 4, 9)
-
-        position = Vec3(25.9, 2.6, 3)
-        self.createConsumables(position, 2, 8)
-
-        position = Vec3(15.2, -2.8, 3)
-        self.createConsumables(position, 4, 10)
-
-        position = Vec3(5.2, -2.8, 3)
-        self.createConsumables(position, 2, 9)
-
-        position = Vec3(-4.5, 2.5, 3)
-        self.createConsumables(position, 4, 11)
-
-        position = Vec3(-15.2, 2.5, 3)
-        self.createConsumables(position, 2, 10)
-
-        position = Vec3(-24.4, -2.6, 3)
-        self.createConsumables(position, 4, 12)
-
-        position = Vec3(-243.5, -4.74, 25)
-        self.createConsumables(position, 4, 13)
-
-        position = Vec3(-242.0, 11.63, 25)
-        self.createConsumables(position, 4, 14)
-
-        position = Vec3(-258.0, -5.8, 25)
-        self.createConsumables(position, 4, 15)
-
-        position = Vec3(-258.0, 12.0, 25)
-        self.createConsumables(position, 4, 16)
-
-        position = Vec3(-98.0, -52.8, 23)
-        self.createConsumables(position, 4, 17)
-
-        position = Vec3(-84.1, -52.8, 23)
-        self.createConsumables(position, 4, 18)
+        what = 0
 
         x = -122.4
         y = -52.3
@@ -454,29 +151,22 @@ class CharacterController(ShowBase):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             x -= 9
 
         for i in range(12):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             y += 9
 
         for i in range(12):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             x += 9
-
-        for i in range(12):
-
-            io += 1
-            position = Vec3(x, y, z)
-            self.createConsumables(position, 3, io)
-            y -= 9
 
         x = -91
         y = 29
@@ -486,29 +176,22 @@ class CharacterController(ShowBase):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             y -= 9
 
         for i in range(9):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             x -= 9
 
         for i in range(9):
 
             io += 1
             position = Vec3(x, y, z)
-            self.createConsumables(position, 1, io)
+            # self.createConsumables(position, 1, io)
             y += 9
-
-        for i in range(10):
-
-            io += 1
-            position = Vec3(x, y, z)
-            self.createConsumables(position, 3, io)
-            x += 9
 
         #PoweUps
 
