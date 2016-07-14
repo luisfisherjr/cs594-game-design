@@ -56,11 +56,27 @@ class CharacterController(ShowBase):
         base.setFrameRateMeter(True)
         base.disableMouse()
 
+
+
+
+        # used in debug mode
+        self.debugNP = self.render.attachNewNode(BulletDebugNode('Debug'))
+        self.cx = onscreenText(.90, '')
+        self.cy = onscreenText(.85, '')
+        self.cz = onscreenText(.80, '')
+
+        self.debugNP.hide()
+        self.cx.hide()
+        self.cy.hide()
+        self.cz.hide()
+
+        self.volume = .5
         self.setupLights()
+        self.setup()
 
         # Input
         self.accept('escape', self.doExit)
-        self.accept('r', self.doReset)
+        # self.accept('r', self.doReset)
         self.accept('f3', self.toggleDebug)
         self.accept('space', self.doJump)
 
@@ -74,17 +90,7 @@ class CharacterController(ShowBase):
         inputState.watchWithModifiers('camUp', 'arrow_up')
         inputState.watchWithModifiers('camDown', 'arrow_down')
 
-        self.volume = .5
-
-        self.debugNP = self.render.attachNewNode(BulletDebugNode('Debug'))
-        self.debugNP.show()
-
-        self.setup()
-
-        # Used in Level Design
-        self.cx = onscreenText(.95, '')
-        self.cy = onscreenText(.90, '')
-        self.cz = onscreenText(.85, '')
+        inputState.watchWithModifiers('helpMenu', 'f1')
 
         # Task
         taskMgr.add(self.update, 'updateWorld')
@@ -264,7 +270,7 @@ class CharacterController(ShowBase):
         platforms =[p1, p2, p3, p4, p5, p6]
         time = 30
         name = 'Button1'
-        buttonType = 0
+        buttonType = 3
 
         self.createButtonWithPlatformAction(position, platforms, time, name, buttonType)
 
@@ -535,8 +541,14 @@ class CharacterController(ShowBase):
     def toggleDebug(self):
         if self.debugNP.isHidden():
             self.debugNP.show()
+            self.cx.show()
+            self.cy.show()
+            self.cz.show()
         else:
             self.debugNP.hide()
+            self.cx.hide()
+            self.cy.hide()
+            self.cz.hide()
 
     def doJump(self):
 
@@ -550,7 +562,7 @@ class CharacterController(ShowBase):
         if self.character.isOnGround():
             self.actorNP.play('jump')
             self.character.doJump()
-            self.playSfx(self.jumpSound, interrupt=0, volume=self.volume)
+            self.playSfx(self.jumpSound, interrupt=0, volume=self.volume * 2)
 
     def soundAndMusicLoader(self):
         self.jumpSound = self.loadSfx('audio/sounds/robot-jump.wav')
@@ -569,6 +581,9 @@ class CharacterController(ShowBase):
         self.minus15Sound = self.loadSfx('audio/sounds/minus-15.wav')
         self.boostSound = self.loadSfx('audio/sounds/boosts.wav')
 
+
+
+
         self.levelIntroMusic = self.loadMusic('audio/music/level-1-intro.mp3')
         self.levelLoopMusic = self.loadMusic('audio/music/level-1.mp3')
         self.gameOverMusic = self.loadMusic('audio/music/game-over.mp3')
@@ -583,6 +598,11 @@ class CharacterController(ShowBase):
         omegamult = 1.0
 
         runSpeed = 10
+
+        if inputState.isSet('helpMenu'):
+            self.helpMenu.show()
+        else:
+            self.helpMenu.hide()
 
         if self.charState['powerdUpSpeed']:
             runSpeed = 20
@@ -619,7 +639,7 @@ class CharacterController(ShowBase):
         onGround = self.character.isOnGround()
 
         if movementInput and onGround and not landing:
-            self.playSfx(self.walkSound, interrupt=0, volume=self.volume / 4)
+            self.playSfx(self.walkSound, interrupt=0, volume=self.volume / 3)
 
         if movementInput and not landing and not running and not jumping and onGround:
             self.actorNP.loop('run')
@@ -756,7 +776,7 @@ class CharacterController(ShowBase):
 
         if isOnGround and not wasOnGround:
             self.actorNP.play('land')
-            self.playSfx(self.landSound, interrupt=0, volume=self.volume)
+            self.playSfx(self.landSound, interrupt=0, volume=self.volume * 2)
 
         if currentTime > self.charState['endOfPowerUpJump']:
             self.charState['powerdUpJump'] = False
@@ -797,13 +817,22 @@ class CharacterController(ShowBase):
         shape = BulletBoxShape(size)
         floorNP = self.render.attachNewNode(BulletRigidBodyNode(name))
         floorNP.node().addShape(shape)
-        # friction does not seem to do anything for BulletCharacterNode
-        # floorNP.node().setFriction(50.0)
         floorNP.setPos(position)
         floorNP.setHpr(hpr)
 
         floorNP.setCollideMask(BitMask32.allOn())
         floorNPModel = loader.loadModel('models/EnvBuildingBlocks/stone-cube/stone.egg')
+        # floorNPModel = loader.loadModel('models/EnvBuildingBlocks/brick-cube/brick.egg')
+
+
+        # change texture of model
+
+        # tex = loader.loadTexture('models/EnvBuildingBlocks/stone-cube/stone.png')
+        # tex.setWrapU(Texture.WMRepeat)
+        # tex.setWrapV(Texture.WMRepeat)
+        # floorNPModel.setTexture(tex, 1)
+
+
         floorNPModel.reparentTo(floorNP)
         # floorNPModel.setScale(1)
         floorNPModel.setScale(size * 2)
@@ -1066,18 +1095,22 @@ class CharacterController(ShowBase):
             if powerUp == 1:
                 self.charState['bonusTime'] += 5
                 self.popUps['+5'].start()
+                self.plus5Sound.setVolume(self.volume)
                 self.plus5Sound.play()
             if powerUp == 2:
                 self.charState['bonusTime'] += 15
                 self.popUps['+15'].start()
+                self.plus15Sound.setVolume(self.volume)
                 self.plus15Sound.play()
             if powerUp == 3:
                 self.charState['bonusTime'] -= 5
                 self.popUps['-5'].start()
+                self.minus5Sound.setVolume(self.volume * 2)
                 self.minus5Sound.play()
             if powerUp == 4:
                 self.charState['bonusTime'] -= 15
                 self.popUps['-15'].start()
+                self.minus15Sound.setVolume(self.volume * 2)
                 self.minus15Sound.play()
             if powerUp == 5:
 
@@ -1153,6 +1186,14 @@ class CharacterController(ShowBase):
 
         self.playMusic(self.levelIntroMusic, volume=self.volume / 4)
         self.popUps['levelTip'].start()
+
+        self.envBack = loader.loadModel('models/EnvBackgrounds/partlysunny/partlysunny.egg')
+        self.envBack.setScale(100)
+        self.envBack.reparentTo(render)
+
+        skyPos = self.characterNP.getPos()
+        skyPos.setZ(skyPos.getZ() - 1000)
+        self.envBack.setPos(skyPos)
 
     def setupGui(self):
 
@@ -1269,6 +1310,49 @@ class CharacterController(ShowBase):
                        'levelTip': levelTipSeq, 'gameOver': fadeInGamOverInterval,
                        'levelFinished': fadeInlevelFinishedInterval}
 
+        self.createHelpMenu()
+
+    def createHelpMenu(self):
+
+        x =  self.getAspectRatio()
+
+        self.helpMenu = DirectFrame(frameColor=(0, 0, 0, .8), frameSize=(-x, x, 1, -1), pos=(0, 0, 0))
+
+        OnscreenText(parent=self.helpMenu, text='CHARACTER CONTROLS', pos=(-1.0, 0.8), scale=0.1,
+                                   fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[w] - Move Forward', pos=(-0.995, 0.6), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[a] - Turn Left', pos=(-1.08, 0.5), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[d] - Turn Right', pos=(-1.06, 0.4), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[s] - Move Backwards', pos=(-0.961, 0.3),
+                     scale=0.07, fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[space] - Jump', pos=(-1.06, 0.2), scale=0.07,
+                     fg=(255, 255, 255, 1))
+
+
+        OnscreenText(parent=self.helpMenu, text='CAMERA CONTROLS', pos=(1.0, .8), scale=0.1,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[up-arrow] - Move Up', pos=(0.951, 0.6), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[down-arrow] - Move Down', pos=(1.04, 0.5), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[left-arrow] - Rotate Left', pos=(1.0, 0.4), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[right-arrow] - Rotate Right', pos=(1.04, 0.3),
+                     scale=0.07, fg=(255, 255, 255, 1))
+
+        OnscreenText(parent=self.helpMenu, text='MISC COMMANDS', pos=(0.0, -0.3), scale=0.1,
+                     fg=(255, 255, 255, 1))
+
+        OnscreenText(parent=self.helpMenu, text='[F1] - Help Menu', pos=(0.0, -.4), scale=0.07,
+                                   fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[F3] - Toggle Debug Mode', pos=(0.16, -.5), scale=0.07,
+                     fg=(255, 255, 255, 1))
+        OnscreenText(parent=self.helpMenu, text='[esc] - Quit', pos=(-0.07, -.6), scale=0.07,
+                     fg=(255, 255, 255, 1))
+
     def makePlayer(self):
         # Character
         h = 6.5
@@ -1278,7 +1362,8 @@ class CharacterController(ShowBase):
         self.character = BulletCharacterControllerNode(shape, 0.4, 'Player')
         self.characterNP = self.render.attachNewNode(self.character)
 
-        what = 0
+        # change character spawn position for testing by commenting out current setPos
+        # and uncommenting new position below line 1368-1371
 
         # self.characterNP.setPos(-400, -6, 127)
         # self.characterNP.setPos(-131, 2, 111)
@@ -1305,24 +1390,6 @@ class CharacterController(ShowBase):
         self.charState = {'health': 100, 'bonusTime': 0, 'RespawnPos': self.characterNP.getPos(), 'gameOver': False,
                           'levelFinished': False, 'gameScore': 0, 'defaultColorScale': self.actorNP.getColorScale(),
                           'powerdUpJump': False, 'endOfPowerUpJump': 0, 'powerdUpSpeed': False, 'endOfPowerUpSpeed': 0}
-
-    def makeBall(self):
-        # Sphere
-        shape = BulletSphereShape(.25)
-        node = BulletRigidBodyNode('Ball')
-        node.setMass(.2)
-        node.addShape(shape)
-
-        # attach
-        self.sphere = self.render.attachNewNode(node)
-        self.sphere.setPos(-122, 0, 6)
-        self.world.attachRigidBody(node)
-
-        # attached object image to physics
-        smileyFace = self.loader.loadModel("models/smiley")
-        smileyFace.reparentTo(self.sphere)
-        smileyFace.setScale(.25)
-
 
 game = CharacterController()
 game.run()
