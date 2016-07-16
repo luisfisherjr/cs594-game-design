@@ -88,12 +88,24 @@ class CharacterController(ShowBase):
 
         # Task
         taskMgr.add(self.update, 'updateWorld')
+        taskMgr.add(self.keepPlatformsMoving, 'movingPlatforms')
 
     def buildLevel(self):
 
         size = Vec3(16, 16, 1)
         position = Vec3(200, 0, 0)
-        p0 = self.createFloatingRectangle(size, position, 'P1')
+        self.createFloatingRectangle(size, position, 'P1')
+
+        size = Vec3(3, 3, 1)
+        position = Vec3(200, 0, 4)
+        name = 'MP1'
+        hpr = Vec3(0, 0, 0)
+
+        maxPos = Vec3(200, 0, 50)
+        minPos = Vec3(200, 0, 4)
+        pathVector = Vec3(0, 0, .1)
+
+        p0 = self.createMovingRectangle(size, position, name, hpr, maxPos, minPos, pathVector)
 
         size = Vec3(6, .5, 1)
         position = Vec3(40, 0, 0)
@@ -111,11 +123,11 @@ class CharacterController(ShowBase):
         position = Vec3(-20, 0, 0)
         p4 = self.createFloatingRectangle(size, position, 'P1.4', (30, 0, 0))
 
-        platforms = [p1,p2,p3,p4]
+        platforms = [p0,p1,p2,p3,p4]
         time = 10
         position = Vec3(200, 0, 1)
         name = 'SW1'
-        buttonType = 3
+        buttonType = 0
 
         self.createButtonWithPlatformAction(position, platforms, time, name, buttonType)
 
@@ -434,6 +446,7 @@ class CharacterController(ShowBase):
         self.world.doPhysics(dt, 4, 1. / 240.)
         self.processConsumableContacts()
         self.processButtonContacts()
+        self.processMovingPlatformContacts()
 
         isOnGround = self.character.isOnGround()
 
@@ -470,6 +483,78 @@ class CharacterController(ShowBase):
         self.render.clearLight()
         self.render.setLight(alightNP)
         self.render.setLight(dlightNP)
+
+    # returns platform so you can me it invisible if you want
+    def createMovingRectangle(self, size, position, name, hpr=LVecBase3f(0, 0, 0), maxPos=Vec3(0, 0, 0),
+                              minPos=Vec3(0, 0, 0), pathVector=Vec3(0, 0, 0)):
+
+        platform = self.createFloatingRectangle(size, position, name, hpr)
+
+        movePlatDict = {'platformNP': platform, 'maxXYZ': maxPos, 'minXYZ': minPos, 'pathVector': pathVector}
+
+        self.movingPlatforms.append(movePlatDict)
+
+        return platform
+
+    def keepPlatformsMoving(self, task):
+
+        for movePlatDict in self.movingPlatforms:
+
+            minX = movePlatDict['minXYZ'].getX()
+            minY = movePlatDict['minXYZ'].getY()
+            minZ = movePlatDict['minXYZ'].getZ()
+
+            maxX = movePlatDict['maxXYZ'].getX()
+            maxY = movePlatDict['maxXYZ'].getY()
+            maxZ = movePlatDict['maxXYZ'].getZ()
+
+            position = movePlatDict['platformNP'].getPos()
+
+            curX = position.getX()
+            curY = position.getY()
+            curZ = position.getZ()
+
+            movX = movePlatDict['pathVector'].getX()
+            movY = movePlatDict['pathVector'].getY()
+            movZ = movePlatDict['pathVector'].getZ()
+
+            if curX + movX > maxX:
+                movePlatDict['pathVector'].setX(movX * -1)
+
+            if curY + movY > maxY:
+                movePlatDict['pathVector'].setY(movY * -1)
+
+            if curZ + movZ > maxZ:
+                movePlatDict['pathVector'].setZ(movZ * -1)
+
+            if curX + movX < minX:
+                movePlatDict['pathVector'].setX(movX * -1)
+
+            if curY + movY < minY:
+                movePlatDict['pathVector'].setY(movY * -1)
+
+            if curZ + movZ < minZ:
+                movePlatDict['pathVector'].setZ(movZ * -1)
+
+            movePlatDict['platformNP'].setPos(position + movePlatDict['pathVector'])
+
+        return task.cont
+
+    def processMovingPlatformContacts(self):
+
+        for movePlatDict in self.movingPlatforms:
+
+            self.processContactWithMovingPlatform(movePlatDict)
+
+    def processContactWithMovingPlatform(self, movePlatDict):
+
+        secondNode = movePlatDict['platformNP'].node()
+
+        contactResult = self.world.contactTestPair(self.character, secondNode)  # returns a BulletContactResult object
+
+        if len(contactResult.getContacts()) > 0 and secondNode.getCollisionResponse():
+
+            self.characterNP.setPos(self.characterNP.getPos() + movePlatDict['pathVector'])
 
     def createFloatingRectangle(self, size, position, name, hpr=LVecBase3f(0, 0, 0)):
 
@@ -822,6 +907,9 @@ class CharacterController(ShowBase):
         self.buttonsWithSequences = []
         self.removeButtons = []
 
+        # holds moving platforms
+        self.movingPlatforms = []
+
         self.floater = NodePath(PandaNode("floater"))
         self.floater.reparentTo(render)
 
@@ -1005,7 +1093,6 @@ class CharacterController(ShowBase):
         smileyFace = self.loader.loadModel("models/smiley")
         smileyFace.reparentTo(self.sphere)
         smileyFace.setScale(.25)
-
 
 game = CharacterController()
 game.run()
