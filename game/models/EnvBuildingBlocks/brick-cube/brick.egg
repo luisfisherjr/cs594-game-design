@@ -4,7 +4,7 @@
   "maya2egg2011 cube.mb cube.egg"
 }
 <Texture> phong1SG {
-  brick.png
+  brick1.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
